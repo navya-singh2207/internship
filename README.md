@@ -1,74 +1,108 @@
-<h1>Background Beams</h1>
+# EvocLabs — Official Landing Page
 
-body {
-margin: 0;
-background-color: black;
-overflow: hidden;
-display: grid;
-place-content: center;
-height: 100vh;
-}
+> **Start at Zero Cost, Scale Fast.**  
+> We build brands that sell themselves. You focus on growing your business — we handle strategy, design, and marketing. Pay only when you start making sales.
 
-h1 {
-position: relative;
-z-index: 2;
-font: 4vw sans-serif;
-color: white;
-}
+---
 
-h1:after {
-content: "";
-position: absolute;
-inset: 0;
-background: linear-gradient(
-to bottom,
-rgba(0, 0, 0, 0) 0%,
-rgba(0, 0, 0, 0.95) 100%
-);
-}
+## 🚀 Tech Stack
 
-.line {
-position: absolute;
-width: 1px;
-background-color: rgba(255, 255, 255, 0.1);
-height: 100vh;
-z-index: 1;
-}
+| Layer | Technology |
+|---|---|
+| Framework | [Next.js 16](https://nextjs.org/) (App Router, Turbopack) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Backend / DB | Firebase (Firestore + Anonymous Auth) |
+| Deployment | Vercel + GitHub Pages (static export) |
 
-.line::after {
-content: "";
-position: absolute;
-left: 0;
-width: 100%;
-height: 80px;
+---
 
-background: linear-gradient(
-to bottom,
-rgba(255, 255, 255, 0),
-rgba(0, 230, 250, 0.8)
-);
-animation: fall var(--ani-duration) var(--ani-delay) linear infinite;
-}
+## 📁 Project Structure
 
-@keyframes fall {
-0% {
-top: -100px;
-}
-100% {
-top: 100%;
-}
-}
-//coment
-const lineCount = 20;
+```
+app/               # Next.js App Router pages
+  ├── page.tsx         # Home / Hero
+  ├── blogs/           # Blog listing page
+  ├── book-demo/       # Book a free demo
+  ├── careers/         # Careers & internship listings
+  └── layout.tsx       # Root layout
 
-for (let i = 1; i <= lineCount; i++) {
-const line = document.createElement("div");
-line.classList.add("line");
-line.style.setProperty(
-"left",
-`${i * (100 / lineCount) + Math.random() * 5 - 5}%`
-);
-line.style.setProperty("--ani-duration", 8 + Math.random() _ 10 + "s");
-line.style.setProperty("--ani-delay", -Math.random() _ 10 + "s");
-document.body.appendChild(line);
-}
+components/        # Reusable UI components
+  └── CareersApplicationForm.tsx
+
+lib/
+  └── firebase/        # Firebase client, auth, Firestore helpers
+
+data/              # Static data (blog posts, job listings, etc.)
+public/            # Static assets
+firestore.rules    # Firestore security rules
+```
+
+---
+
+## ⚙️ Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/Shreya-singh22/Evoc_labs.git
+cd Evoc_labs
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up environment variables
+
+```bash
+cp .env.local.example .env.local
+```
+
+Fill in your Firebase project credentials in `.env.local`:
+
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=...
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+NEXT_PUBLIC_FIREBASE_APP_ID=...
+```
+
+### 4. Run the dev server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🔥 Firebase Setup
+
+1. Create a project at [Firebase Console](https://console.firebase.google.com/).
+2. Enable **Firestore Database** (in production mode).
+3. Enable **Anonymous Authentication** under *Authentication → Sign-in method*.
+4. Deploy Firestore security rules:
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+---
+
+## 🏗️ Building for Production
+
+```bash
+npm run build
+```
+
+---
+
+## 📄 License
+
+© 2026 EvocLabs. All rights reserved.
