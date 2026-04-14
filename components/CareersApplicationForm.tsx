@@ -2,11 +2,18 @@
 
 import React, { useMemo, useState } from "react";
 import { submitInternshipApplication } from "@/lib/firebase/submitApplication";
+import type { FirebaseError } from "firebase/app";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+function getFirebaseErrorCode(err: unknown): string | null {
+  const anyErr = err as Partial<FirebaseError> | null | undefined;
+  if (!anyErr || typeof anyErr !== "object") return null;
+  return typeof anyErr.code === "string" ? anyErr.code : null;
 }
 
 function Input({
@@ -73,20 +80,42 @@ export default function CareersApplicationForm() {
       setMessage("");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "";
+      const code = getFirebaseErrorCode(err);
+
       if (msg === "FIREBASE_NOT_CONFIGURED") {
         setErrorMessage(
           "Firebase isn’t configured. Add your Firebase keys to .env.local and restart the dev server.",
         );
-      } else if (msg.includes("auth/operation-not-allowed")) {
+      } else if (msg === "FIREBASE_AUTH_TIMEOUT") {
+        setErrorMessage(
+          "Firebase Auth is taking too long. Check your internet/VPN, then try again.",
+        );
+      } else if (msg === "FIREBASE_WRITE_TIMEOUT") {
+        setErrorMessage(
+          "Saving to Firestore is taking too long. Check Firestore is created + rules are published, then try again.",
+        );
+      } else if (code === "auth/operation-not-allowed" || msg.includes("auth/operation-not-allowed")) {
         setErrorMessage(
           "Anonymous Auth is disabled in Firebase. Enable it in Firebase Console → Authentication → Sign-in method.",
         );
-      } else if (msg.includes("permission-denied")) {
+      } else if (code === "permission-denied" || msg.includes("permission-denied")) {
         setErrorMessage(
           "Firestore blocked the request (permission denied). Deploy the provided Firestore rules and try again.",
         );
+      } else if (code === "failed-precondition" || msg.includes("failed-precondition")) {
+        setErrorMessage(
+          "Firestore isn’t ready for this project (failed precondition). Create Firestore Database in Firebase Console, then try again.",
+        );
+      } else if (code === "auth/network-request-failed" || msg.includes("network-request-failed")) {
+        setErrorMessage(
+          "Network request failed. Check internet/VPN or try again in a fresh tab.",
+        );
       } else {
-        setErrorMessage("Something went wrong. Please try again.");
+        setErrorMessage(
+          code
+            ? `Something went wrong (${code}). Please try again.`
+            : "Something went wrong. Please try again.",
+        );
       }
       setStatus("error");
     }

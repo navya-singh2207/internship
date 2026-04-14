@@ -15,6 +15,16 @@ export type InternshipApplicationInput = {
 
 let signingIn: Promise<void> | null = null;
 
+function withTimeout<T>(promise: Promise<T>, ms: number, code: string): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(code)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => {
+    if (timeoutId) clearTimeout(timeoutId);
+  }) as Promise<T>;
+}
+
 async function ensureAuthed() {
   if (!isFirebaseConfigured()) {
     throw new Error("FIREBASE_NOT_CONFIGURED");
@@ -26,7 +36,7 @@ async function ensureAuthed() {
     signInAnonymously(auth).then(() => {
       signingIn = null;
     });
-  await signingIn;
+  await withTimeout(signingIn, 12_000, "FIREBASE_AUTH_TIMEOUT");
 }
 
 export async function submitInternshipApplication(input: InternshipApplicationInput) {
@@ -35,7 +45,8 @@ export async function submitInternshipApplication(input: InternshipApplicationIn
   const db = getFirebaseDb();
   const apps = collection(db, "applications");
 
-  await addDoc(apps, {
+  await withTimeout(
+    addDoc(apps, {
     roleId: input.roleId,
     fullName: input.fullName,
     email: input.email,
@@ -46,6 +57,9 @@ export async function submitInternshipApplication(input: InternshipApplicationIn
     message: input.message ?? null,
     createdAt: serverTimestamp(),
     source: "careers_page",
-  });
+    }),
+    12_000,
+    "FIREBASE_WRITE_TIMEOUT",
+  );
 }
 
