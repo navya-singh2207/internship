@@ -1,108 +1,84 @@
-# EvocLabs — Official Landing Page
+# Backend Developer Assignment Project
 
-> **Start at Zero Cost, Scale Fast.**  
-> We build brands that sell themselves. You focus on growing your business — we handle strategy, design, and marketing. Pay only when you start making sales.
+This repository contains a complete implementation of the internship assignment:
+- Secure REST APIs with JWT authentication and role-based access control
+- CRUD APIs for tasks
+- API versioning (`/api/v1`)
+- Validation + centralized error handling
+- Swagger API documentation
+- React frontend to test all APIs
 
----
+## Tech Stack
 
-## 🚀 Tech Stack
+- **Backend:** Node.js, Express, Prisma, PostgreSQL, JWT, bcrypt, express-validator, Swagger
+- **Frontend:** React + Vite, Axios, React Router
 
-| Layer | Technology |
-|---|---|
-| Framework | [Next.js 16](https://nextjs.org/) (App Router, Turbopack) |
-| Language | TypeScript |
-| Styling | Tailwind CSS v4 |
-| Backend / DB | Firebase (Firestore + Anonymous Auth) |
-| Deployment | Vercel + GitHub Pages (static export) |
+## Project Structure
 
----
+- `backend/` - Versioned REST API and database layer
+- `frontend/` - UI for register/login and task CRUD
 
-## 📁 Project Structure
+## Backend Setup
 
-```
-app/               # Next.js App Router pages
-  ├── page.tsx         # Home / Hero
-  ├── blogs/           # Blog listing page
-  ├── book-demo/       # Book a free demo
-  ├── careers/         # Careers & internship listings
-  └── layout.tsx       # Root layout
+1. Go to backend:
+   - `cd backend`
+2. Install dependencies:
+   - `npm install`
+3. Create `.env`:
+   - `PORT=5001`
+   - `DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/tasks_db"`
+   - `JWT_SECRET="your_super_secret_key"`
+4. Run migrations:
+   - `npx prisma migrate dev --name init`
+5. Start backend:
+   - `npm run dev`
 
-components/        # Reusable UI components
-  └── CareersApplicationForm.tsx
+Backend runs on `http://localhost:5001`.
 
-lib/
-  └── firebase/        # Firebase client, auth, Firestore helpers
+## Frontend Setup
 
-data/              # Static data (blog posts, job listings, etc.)
-public/            # Static assets
-firestore.rules    # Firestore security rules
-```
+1. Go to frontend:
+   - `cd frontend`
+2. Install dependencies:
+   - `npm install`
+3. Create `.env`:
+   - `VITE_API_URL=http://localhost:5001/api/v1`
+4. Start frontend:
+   - `npm run dev`
 
----
+Frontend runs on `http://localhost:5173`.
 
-## ⚙️ Getting Started
+## API Documentation
 
-### 1. Clone the repo
+- Swagger UI: `http://localhost:5001/api-docs`
+- Collection file: `backend/postman_collection.json`
 
-```bash
-git clone https://github.com/Shreya-singh22/Evoc_labs.git
-cd Evoc_labs
-```
+## Implemented Features (Assignment Checklist)
 
-### 2. Install dependencies
+- User registration and login with hashed passwords and JWT
+- Role-based access (USER / ADMIN)
+- Task CRUD APIs
+- Protected routes with JWT middleware
+- API versioning (`/api/v1`)
+- Input validation and centralized error responses
+- PostgreSQL schema with Prisma migrations
+- Frontend pages for auth, protected dashboard, and task operations
+- Error/success feedback from API responses
 
-```bash
-npm install
-```
+## Example Endpoints
 
-### 3. Set up environment variables
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `GET /api/v1/tasks`
+- `GET /api/v1/tasks/:id`
+- `POST /api/v1/tasks`
+- `PUT /api/v1/tasks/:id`
+- `DELETE /api/v1/tasks/:id` (admin only)
 
-```bash
-cp .env.local.example .env.local
-```
+## Scalability Note
 
-Fill in your Firebase project credentials in `.env.local`:
-
-```env
-NEXT_PUBLIC_FIREBASE_API_KEY=...
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
-NEXT_PUBLIC_FIREBASE_APP_ID=...
-```
-
-### 4. Run the dev server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 🔥 Firebase Setup
-
-1. Create a project at [Firebase Console](https://console.firebase.google.com/).
-2. Enable **Firestore Database** (in production mode).
-3. Enable **Anonymous Authentication** under *Authentication → Sign-in method*.
-4. Deploy Firestore security rules:
-
-```bash
-firebase deploy --only firestore:rules
-```
-
----
-
-## 🏗️ Building for Production
-
-```bash
-npm run build
-```
-
----
-
-## 📄 License
-
-© 2026 EvocLabs. All rights reserved.
+This codebase is organized by modules (`controllers`, `routes`, `middleware`, `models`) so new domains can be added without touching existing flows. For larger traffic, the next steps are:
+- Add Redis caching for task list reads
+- Add request logging and centralized log aggregation
+- Deploy stateless API instances behind a load balancer
+- Split auth and task modules into separate services when domain growth demands it
