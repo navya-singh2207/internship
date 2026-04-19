@@ -1,6 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
     // Public job postings can be stored here (optional).
     match /jobs/{jobId} {
       allow read: if true;
@@ -31,6 +39,95 @@ service cloud.firestore {
         && request.resource.data.source is string;
 
       allow update, delete: if false;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && request.resource.data.keys().hasOnly([
+          'seedVersion',
+          'updatedAt'
+        ])
+        && request.resource.data.seedVersion is int;
+      allow delete: if false;
+
+      match /categories/{categoryId} {
+        allow read, list: if isOwner(userId);
+
+        allow create: if isOwner(userId)
+          && request.resource.data.keys().hasOnly([
+            'name',
+            'color',
+            'icon',
+            'createdAt'
+          ])
+          && request.resource.data.name is string
+          && request.resource.data.color is string
+          && request.resource.data.icon is string;
+
+        allow update: if isOwner(userId)
+          && request.resource.data.keys().hasOnly([
+            'name',
+            'color',
+            'icon',
+            'createdAt',
+            'updatedAt'
+          ])
+          && request.resource.data.name is string
+          && request.resource.data.color is string
+          && request.resource.data.icon is string;
+
+        allow delete: if isOwner(userId);
+      }
+
+      match /expenses/{expenseId} {
+        allow read, list: if isOwner(userId);
+
+        allow create: if isOwner(userId)
+          && request.resource.data.keys().hasOnly([
+            'title',
+            'amount',
+            'type',
+            'categoryId',
+            'date',
+            'note',
+            'createdAt'
+          ])
+          && request.resource.data.title is string
+          && request.resource.data.amount is number
+          && request.resource.data.type in ['expense', 'income']
+          && request.resource.data.categoryId is string
+          && request.resource.data.date is string
+          && (
+            !('note' in request.resource.data)
+            || request.resource.data.note == null
+            || request.resource.data.note is string
+          );
+
+        allow update: if isOwner(userId)
+          && request.resource.data.keys().hasOnly([
+            'title',
+            'amount',
+            'type',
+            'categoryId',
+            'date',
+            'note',
+            'createdAt',
+            'updatedAt'
+          ])
+          && request.resource.data.title is string
+          && request.resource.data.amount is number
+          && request.resource.data.type in ['expense', 'income']
+          && request.resource.data.categoryId is string
+          && request.resource.data.date is string
+          && (
+            !('note' in request.resource.data)
+            || request.resource.data.note == null
+            || request.resource.data.note is string
+          );
+
+        allow delete: if isOwner(userId);
+      }
     }
   }
 }

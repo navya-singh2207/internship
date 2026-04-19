@@ -23,6 +23,9 @@ node_modules
 # production
 /build
 
+# stray frontend build output (not used by Next.js app)
+/frontend/dist
+
 # misc
 .DS_Store
 *.pem

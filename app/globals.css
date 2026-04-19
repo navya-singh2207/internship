@@ -20,17 +20,20 @@
 }
 
 :root {
-  --background: #08070b;
-  --foreground: #f7f8f8;
-  --surface: #08070b;
-  --surface-highlight: #15141a;
-  --text-main: #f7f8f8;
-  --text-secondary: #8a8f98;
-  --text-muted: #5e6168;
-  --border: rgba(255, 255, 255, 0.06);
-  --primary: #5e6ad2;
-  --primary-hover: #4f5bc6;
-  --radius: 0.5rem;
+  --background: #07070d;
+  --foreground: #f4f5f7;
+  --surface: #10101a;
+  --surface-highlight: #161725;
+  --text-main: #f4f5f7;
+  --text-secondary: #a1a7b3;
+  --text-muted: #626673;
+  --border: rgba(255, 255, 255, 0.09);
+  --primary: #6d7cff;
+  --primary-hover: #5a68f0;
+  --accent: #5be3a9;
+  --glow-primary: rgba(109, 124, 255, 0.4);
+  --glow-accent: rgba(91, 227, 169, 0.16);
+  --radius: 0.75rem;
 }
 
 html {
@@ -43,10 +46,74 @@ body {
   color: var(--foreground);
   overflow-x: hidden;
   font-family: "Plus Jakarta Sans", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 @layer base {
   * {
     border-color: var(--border);
   }
+
+  :focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--primary) 70%, white);
+    outline-offset: 2px;
+  }
+}
+
+/* Subtle page texture — keeps dark sections from feeling flat */
+.page-ambient {
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(109, 124, 255, 0.2), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 30%, rgba(91, 227, 169, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 0% 85%, rgba(109, 124, 255, 0.07), transparent 45%);
+}
+
+.page-grid {
+  background-size: 64px 64px;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 85% 70% at 50% 0%, black 20%, transparent 75%);
+}
+
+.expense-shell::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 31px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01)),
+    linear-gradient(135deg, rgba(109, 124, 255, 0.08), rgba(91, 227, 169, 0.02));
+  pointer-events: none;
+}
+
+.expense-input {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-main);
+  padding: 0.8rem 1rem;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.expense-input::placeholder {
+  color: var(--text-muted);
+}
+
+.expense-input:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.expense-input:focus {
+  border-color: rgba(109, 124, 255, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 4px rgba(109, 124, 255, 0.12);
+  outline: none;
 }

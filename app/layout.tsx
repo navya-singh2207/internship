@@ -35,25 +35,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Evoc Labs – Scaling D2C with Technology",
+  title: "SpendSense - Premium Expense Tracker",
   description:
-    "Evoc Labs is a technology company building proprietary performance systems and software for D2C brand growth. Scale profitably with our data-driven tech and performance infrastructure.",
+    "SpendSense is a premium dark expense tracker for managing transactions, categories, savings, and cashflow insights in one calm dashboard.",
   keywords:
-    "Evoc Labs, e-commerce software, growth technology, performance marketing systems, D2C growth tech, ad management software, performance infrastructure, e-commerce data systems",
+    "expense tracker, personal finance dashboard, budget planner, finance analytics, cashflow tracker, Next.js expense app, Firebase finance app",
   robots: "index, follow",
   openGraph: {
     type: "website",
-    title: "Evoc Labs – Scaling D2C with Technology",
+    title: "SpendSense - Premium Expense Tracker",
     description:
-      "We build proprietary performance systems and software to scale D2C brands profitably. Data-driven growth technology with zero guesswork.",
+      "Track income, expenses, savings, and category performance in a polished finance dashboard built with Next.js and Firebase.",
     url: "https://evoclabs.com/",
     images: ["https://i.postimg.cc/3wWLDB2q/Instagram-story-16.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Evoc Labs – E-Commerce Technology & Growth",
+    title: "SpendSense - Premium Expense Tracker",
     description:
-      "Proprietary tech-driven performance systems for modern D2C brands. Built for profitability and scale.",
+      "Premium dark expense tracking with live transaction sync, charts, and category insights.",
     images: ["https://i.postimg.cc/3wWLDB2q/Instagram-story-16.png"],
   },
   icons: {
@@ -69,7 +69,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth bg-[#08070b]">
+    <html lang="en" className="scroll-smooth bg-background">
       <head>
         {/* Exact CDN links from index.md.html (exhaustive list) */}
         <link

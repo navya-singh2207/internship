@@ -3,81 +3,72 @@ import Link from "next/link";
 
 const Footer = () => {
   const exploreLinks = [
-    { name: "Shopify Services", href: "/services" },
-    { name: "Success Stories", href: "/cases" },
-    { name: "Our Methodology", href: "/method" },
-    { name: "Shopify Plus", href: "/shopify-plus" },
+    { name: "Dashboard", href: "/" },
+    { name: "Blogs", href: "/blogs" },
+    { name: "Careers", href: "/careers" },
+    { name: "Book Demo", href: "/book-demo" },
   ];
 
   const socialLinks = [
     { name: "Instagram", href: "https://instagram.com" },
-    { name: "Dribbble", href: "https://dribbble.com" },
     { name: "LinkedIn", href: "https://linkedin.com" },
+    { name: "GitHub", href: "https://github.com" },
   ];
 
   return (
-    <footer className="overflow-hidden bg-background text-text-main pt-32 pb-0 relative">
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="grid md:grid-cols-4 gap-12 mb-24">
-          {/* Brand/CTA Section */}
-          <div className="md:col-span-1">
-            <p className="text-xs font-bold uppercase tracking-widest mb-6 text-text-muted">
-              The Agency
+    <footer className="relative overflow-hidden bg-background px-4 pb-10 pt-10 text-text-main sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl rounded-[32px] border border-white/8 bg-white/[0.025] p-8 shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
+        <div className="grid gap-12 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <p className="mb-4 text-xs font-bold uppercase tracking-widest text-text-muted">
+              Expense Tracker
             </p>
-            <p className="text-3xl font-sans mb-6 leading-tight tracking-tight text-text-main">
-              E-commerce that merges aesthetics with high conversion.
+            <p className="max-w-xl text-3xl font-sans leading-tight tracking-tight text-text-main">
+              A premium dark personal finance dashboard with live Firebase sync,
+              focused analytics, and clean transaction workflows.
             </p>
-            <div className="flex gap-4">
-              <button className="text-xs font-medium bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition-colors">
-                Request Proposal
-              </button>
+            <div className="mt-6 flex gap-4">
+              <Link
+                href="/"
+                className="inline-flex rounded-full bg-linear-to-r from-[#4f5dff] to-cyan-400 px-6 py-3 text-xs font-semibold text-white ring-1 ring-white/15 transition-all duration-300 shadow-[0_6px_28px_rgba(79,93,255,0.35)] hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(79,93,255,0.45)] active:translate-y-0"
+              >
+                Back to dashboard
+              </Link>
             </div>
           </div>
 
-          {/* Contact Section */}
           <div className="md:col-span-1">
-            <p className="text-xs font-bold uppercase tracking-widest mb-6 text-text-muted">
-              Contact
+            <p className="mb-6 text-xs font-bold uppercase tracking-widest text-text-muted">
+              Product Notes
             </p>
-            <a
-              href="mailto:hello@evoclabs.com"
-              className="block text-lg font-sans mb-2 text-text-main hover:text-primary transition-colors tracking-tight"
-            >
-              hello@evoclabs.com
-            </a>
-            <p className="text-sm text-text-secondary mb-6">
-              +55 11 99999-9999
-            </p>
-            <p className="text-[10px] text-text-muted leading-relaxed">
-              São Paulo, SP
+            <p className="text-sm leading-7 text-text-secondary">
+              Built with Next.js, Tailwind CSS, Recharts, and Firebase
+              Firestore. Designed to feel calm, structured, and genuinely
+              product-grade.
               <br />
-              Brazil
-              <br />
-              Shopify Experts
+              Anonymous auth keeps setup friction low while still persisting
+              each user&apos;s data.
             </p>
           </div>
 
-          {/* Navigation Sections */}
-          <div className="md:col-span-2 flex flex-col md:flex-row justify-end gap-12 md:gap-24 text-sm font-medium">
-            {/* Explore Links */}
+          <div className="md:col-span-1 flex flex-col gap-8 text-sm font-medium">
             <div className="flex flex-col gap-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-text-muted">
                 Explore
               </span>
               {exploreLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="hover:text-primary transition-colors"
+                  className="transition-colors hover:text-primary"
                 >
                   {link.name}
                 </Link>
               ))}
             </div>
 
-            {/* Social Links */}
             <div className="flex flex-col gap-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-text-muted">
                 Social
               </span>
               {socialLinks.map((social) => (
@@ -86,7 +77,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-primary transition-colors"
+                  className="transition-colors hover:text-primary"
                 >
                   {social.name}
                 </a>
@@ -94,12 +85,18 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/8 pt-5 text-xs text-text-muted sm:flex-row sm:items-center sm:justify-between">
+          <span>SpendSense Expense Tracker</span>
+          <span>
+            Live data sync, analytics, and a premium dark dashboard shell.
+          </span>
+        </div>
       </div>
 
-      {/* Decorative Big Text Section */}
-      <div className="w-full text-center leading-none overflow-hidden border-t border-border">
-        <h1 className="text-[18vw] font-bold leading-[0.75] font-sans text-text-main/5 tracking-tighter select-none pointer-events-none -mb-[0.05em] pt-4">
-          EVOC LABS
+      <div className="w-full overflow-hidden pt-6 text-center leading-none">
+        <h1 className="pointer-events-none select-none pt-4 font-sans text-[16vw] font-bold tracking-tighter text-text-main/5">
+          SPENDSENSE
         </h1>
       </div>
     </footer>
